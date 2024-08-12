@@ -8,9 +8,9 @@ class App extends Component {
 
   constructor() {
     super()
-
     this.state = {
-      arrayOfBeer: []
+      arrayOfBeer: [],
+      likedBeer: []
     }
   }
 
@@ -22,11 +22,15 @@ class App extends Component {
     })
   }
 
+  likeButton = (index) => {
+    this.setState({likedBeer: [...this.state.likedBeer, this.state.arrayOfBeer[index]]})
+  }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
+          <h1 style={{marginTop: "70px", marginBottom: "0px"}}>Breweries Data</h1>
           <ol>
             {this.state.arrayOfBeer.map((beer, index) => {
               return (
@@ -36,6 +40,11 @@ class App extends Component {
                 site={beer.website_url} 
                 phone={beer.phone} 
                 street={beer.street}
+                city={beer.city}
+                state={beer.state}
+                zip={beer.postal_code}
+                like={this.likeButton}
+                index={index}
                 />
               )
             })}
