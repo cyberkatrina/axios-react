@@ -23,7 +23,15 @@ class App extends Component {
   }
 
   likeButton = (index) => {
-    this.setState({likedBeer: [...this.state.likedBeer, this.state.arrayOfBeer[index]]})
+    if (!this.state.likedBeer.includes(this.state.arrayOfBeer[index])) {
+      this.setState({likedBeer: [...this.state.likedBeer, this.state.arrayOfBeer[index]]})
+    }
+    else {
+      let copyArr = [...this.state.likedBeer]
+      copyArr.splice(copyArr.indexOf(this.state.arrayOfBeer[index]), 1)
+      this.setState({likedBeer: copyArr})
+    }
+
   }
 
   render() {
@@ -45,6 +53,7 @@ class App extends Component {
                 zip={beer.postal_code}
                 like={this.likeButton}
                 index={index}
+                isLiked={this.state.likedBeer.includes(this.state.arrayOfBeer[index])}
                 />
               )
             })}
