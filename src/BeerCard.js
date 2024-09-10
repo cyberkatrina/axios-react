@@ -29,7 +29,6 @@ const BeerCard = (props) => {
 
           }
         </div>
-        {/* <img onClick={like(index)} src= {Image}/> */}
       </div>
     </li>
   )

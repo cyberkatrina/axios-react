@@ -1,8 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom'
 import axios from 'axios'
-import BeerCard from './BeerCard';
+import ListofBeers from './ListofBeers'
+import Button from '@mui/material/Button'
 
 class App extends Component {
 
@@ -10,7 +11,8 @@ class App extends Component {
     super()
     this.state = {
       arrayOfBeer: [],
-      likedBeer: []
+      likedBeer: [],
+      searchTerm: ""
     }
   }
 
@@ -22,42 +24,36 @@ class App extends Component {
     })
   }
 
-  likeButton = (index) => {
-    if (!this.state.likedBeer.includes(this.state.arrayOfBeer[index])) {
-      this.setState({likedBeer: [...this.state.likedBeer, this.state.arrayOfBeer[index]]})
-    }
-    else {
-      let copyArr = [...this.state.likedBeer]
-      copyArr.splice(copyArr.indexOf(this.state.arrayOfBeer[index]), 1)
-      this.setState({likedBeer: copyArr})
-    }
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
 
+  filterSearch(term) {
+    return (item) => {
+      return(
+        item.name.toLowerCase().includes(term.toLowerCase())
+      )
+    }
   }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
+          <Link to='/'>
+            <Button variant='contained' color='secondary'>Go Home</Button>
+          </Link>
           <h1 style={{marginTop: "70px", marginBottom: "0px"}}>Breweries Data</h1>
-          <ol>
-            {this.state.arrayOfBeer.map((beer, index) => {
-              return (
-                <BeerCard 
-                key={index} 
-                name={beer.name} 
-                site={beer.website_url} 
-                phone={beer.phone} 
-                street={beer.street}
-                city={beer.city}
-                state={beer.state}
-                zip={beer.postal_code}
-                like={this.likeButton}
-                index={index}
-                isLiked={this.state.likedBeer.includes(this.state.arrayOfBeer[index])}
-                />
-              )
-            })}
-          </ol>
+          <form>
+            <input type='text' name='searchTerm' value={this.state.searchTerm} onChange={this.handleChange} placeholder='search by name'></input>
+          </form>
+          {
+            this.state.searchTerm ?
+            <ListofBeers arrayOfBeer={this.state.arrayOfBeer} beers={this.state.arrayOfBeer.filter(this.filterSearch(this.state.searchTerm))}/> :
+            <ListofBeers arrayOfBeer={this.state.arrayOfBeer} beers={this.state.arrayOfBeer}/>
+          }
         </header>
       </div>
     );
