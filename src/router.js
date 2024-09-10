@@ -8,9 +8,9 @@ const Home = () => {
   return (
     <div style={{textAlign: 'center'}}>
       <h1>Home</h1>
-      <Link to='/app'>
-        <Button variant='contained' color='secondary'>Go to Beer App</Button>
-      </Link>
+      <Button component={Link} to="/app" variant="outlined" color="primary">
+        Go to Beer App
+      </Button>
     </div>
   )
 }
